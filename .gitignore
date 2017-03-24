@@ -1,0 +1,14 @@
+############################
+## Unreal Generated Files ##
+############################
+*/Build
+*/Binaries
+*/Saved
+*/DerivedDataCache
+*/Intermediate
+Kai_Project/Content/StarterContent/
+
+########################
+## VS Generated Files ##
+########################
+*.VC.db
