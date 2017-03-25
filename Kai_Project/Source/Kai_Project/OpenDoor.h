@@ -25,14 +25,25 @@ public:
 
 private:
 	void OpenTheDoor();
+	void CloseTheDoor();
+
 	AActor* GetPlayerPawn();
 
 private:
+	FQuat OriginalRotation;
+
 	UPROPERTY(EditAnywhere)
-	float TurnAngle = 90.0f;
+	float OpenAngle = 90.0f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume *PressurePlate;
 
 	AActor *ActorThatOpensDoor;
+
+	UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 1.0f;
+
+	float DoorLastCloseCheck;
+
+	bool DoorIsClosed;
 };
