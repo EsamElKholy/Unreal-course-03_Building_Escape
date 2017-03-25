@@ -21,6 +21,8 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+	FindPhysicsHandleComponent();
+	SetupInputComponent();
 	
 }
 
@@ -30,16 +32,61 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	// ...	
+}
 
+void UGrabber::FindPhysicsHandleComponent()
+{
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+
+	if (PhysicsHandle)
+	{
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s can't find a physics handle component"), *GetOwner()->GetName())
+	}
+}
+
+void UGrabber::SetupInputComponent()
+{
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+
+	if (InputComponent)
+	{
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::GrabObject);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::ReleaseObject);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s can't find an input component"), *GetOwner()->GetName())
+	}
+}
+
+void UGrabber::GrabObject()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab pressed!"))
+
+	GetFirstPhysicsBodyInReach();
+}
+
+void UGrabber::ReleaseObject()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab released!"))
+
+}
+
+FHitResult UGrabber::GetFirstPhysicsBodyInReach()
+{
 	///
 	FVector playerPos;
 	FRotator playerRotator;
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(playerPos, playerRotator);
+	FVector end = playerPos + playerRotator.Vector() * Reach;
 
 	///
-	FVector end = playerPos + playerRotator.Vector() * 100.0f;
-	DrawDebugLine(GetWorld(), playerPos, end, FColor(255, 0, 0), false, 0, 0, 10);
+	//DrawDebugLine(GetWorld(), playerPos, end, FColor(255, 0, 0), false, 0, 0, 10);
 
 	///
 	FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
@@ -53,5 +100,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		// Do Something
 		UE_LOG(LogTemp, Warning, TEXT("We hit: %s"), *actor->GetName())
 	}
+
+	return hit;
 }
 
