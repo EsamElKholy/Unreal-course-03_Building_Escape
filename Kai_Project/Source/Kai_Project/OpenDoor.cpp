@@ -20,8 +20,7 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...	
-	OriginalRotation = GetOwner()->GetTransform().GetRotation();
+	// ...
 
 	if (PressurePlate == nullptr)
 	{
@@ -39,38 +38,12 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 	if (GetTotalMassOnPlate() >= TriggerMass)
 	{
-		OpenTheDoor();
-
-		DoorLastCloseCheck = GetWorld()->GetTimeSeconds();
-		DoorIsClosed = false;
+		OnOpenRequest.Broadcast();
 	}
-
-	if (!DoorIsClosed)
+	else
 	{
-		if (GetWorld()->GetTimeSeconds() - DoorLastCloseCheck > DoorCloseDelay)
-		{
-			CloseTheDoor();
-			DoorIsClosed = true;
-		}
+		OnCloseRequest.Broadcast();
 	}
-}
-
-void UOpenDoor::OpenTheDoor()
-{
-	//GetOwner()->SetActorRotation(FRotator(0, OpenAngle, 0));
-	OnOpenRequest.Broadcast();
-}
-
-void UOpenDoor::CloseTheDoor()
-{
-	GetOwner()->SetActorRotation(OriginalRotation);
-}
-
-AActor* UOpenDoor::GetPlayerPawn() 
-{
-	AActor *pawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-
-	return pawn;
 }
 
 float UOpenDoor::GetTotalMassOnPlate()

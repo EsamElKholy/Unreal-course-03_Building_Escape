@@ -5,7 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "OpenDoor.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnOpenRequest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class KAI_PROJECT_API UOpenDoor : public UActorComponent
@@ -26,32 +26,25 @@ public:
 
 public:
 	UPROPERTY(BlueprintAssignable)
-	FOnOpenRequest OnOpenRequest;
+	FDoorEvent OnOpenRequest;
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnCloseRequest;
 
 private:
-	void OpenTheDoor();
-	void CloseTheDoor();
-
-	AActor* GetPlayerPawn();
-
 	float GetTotalMassOnPlate();
 
-private:
-	FQuat OriginalRotation;
-
-	UPROPERTY(EditAnywhere)
-	float OpenAngle = 90.0f;
-
+private:	
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume *PressurePlate = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	float TriggerMass = 30.0f;
-
-	UPROPERTY(EditAnywhere)
-	float DoorCloseDelay = 1.0f;
-
-	float DoorLastCloseCheck;
-
-	bool DoorIsClosed;
 };
+
+/*
+- super crunchy cono x3
+- cheese fries x3
+- friday chicken x2
+
+*/
