@@ -29,6 +29,8 @@ private:
 
 	AActor* GetPlayerPawn();
 
+	float GetTotalMassOnPlate();
+
 private:
 	FQuat OriginalRotation;
 
@@ -38,7 +40,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume *PressurePlate;
 
-	AActor *ActorThatOpensDoor;
+	UPROPERTY(EditAnywhere)
+	float TriggerMass = 30.0f;
 
 	UPROPERTY(EditAnywhere)
 	float DoorCloseDelay = 1.0f;
