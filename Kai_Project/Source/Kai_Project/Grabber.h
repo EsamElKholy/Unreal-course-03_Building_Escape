@@ -24,6 +24,19 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	struct Line
+	{
+	public:
+		Line(FVector start = FVector(), FVector end = FVector())
+			: Start(start), End(end)
+		{}
+
+	public:
+		FVector Start;
+		FVector End;
+	};
+
+private:
 	void FindPhysicsHandleComponent();
 	void SetupInputComponent();
 
@@ -31,6 +44,8 @@ private:
 	void ReleaseObject();
 		
 	FHitResult GetFirstPhysicsBodyInReach();
+
+	Line GetTracedLine();
 
 private:
 	float Reach = 100.0f;
