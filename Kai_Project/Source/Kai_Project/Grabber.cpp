@@ -33,6 +33,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...	
+	if (PhysicsHandle == nullptr)
+	{
+		return;
+	}
+
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		PhysicsHandle->SetTargetLocation(GetTracedLine().End);
@@ -72,6 +77,11 @@ void UGrabber::GrabObject()
 
 	if (actor)
 	{
+		if (PhysicsHandle == nullptr)
+		{
+			return;
+		}
+
 		PhysicsHandle->GrabComponent
 		(
 			hitRes.GetComponent(),
@@ -84,6 +94,11 @@ void UGrabber::GrabObject()
 
 void UGrabber::ReleaseObject()
 {
+	if (PhysicsHandle == nullptr)
+	{
+		return;
+	}
+
 	PhysicsHandle->ReleaseComponent();
 }
 

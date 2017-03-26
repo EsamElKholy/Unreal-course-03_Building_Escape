@@ -22,6 +22,11 @@ void UOpenDoor::BeginPlay()
 
 	// ...	
 	OriginalRotation = GetOwner()->GetTransform().GetRotation();
+
+	if (PressurePlate == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't find any PressurePlate (TriggerVolume) component in %s, please initialize it!!!"), *GetOwner()->GetName())
+	}
 }
 
 
@@ -52,7 +57,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::OpenTheDoor()
 {
-	GetOwner()->SetActorRotation(FRotator(0, OpenAngle, 0));
+	//GetOwner()->SetActorRotation(FRotator(0, OpenAngle, 0));
+	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseTheDoor()
@@ -69,6 +75,11 @@ AActor* UOpenDoor::GetPlayerPawn()
 
 float UOpenDoor::GetTotalMassOnPlate()
 {
+	if (PressurePlate == nullptr)
+	{
+		return 0;
+	}
+
 	TArray<AActor*> actors;
 
 	PressurePlate->GetOverlappingActors(actors);
